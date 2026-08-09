@@ -37,7 +37,11 @@
   label{display:block;font-size:.9rem;font-weight:600;margin-bottom:12px}
   .row{display:flex;gap:12px;flex-wrap:wrap}
   input{flex:1 1 220px;height:48px;border-radius:12px;border:1px solid var(--border);background:#131108;color:var(--fg);padding:0 14px;font-size:1rem}
-  button,.btn{height:48px;border:0;border-radius:12px;background:var(--gold);color:#181206;font-weight:700;padding:0 22px;font-size:1rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+  input::placeholder{color:#6f6857}
+  input:focus{outline:none;border-color:rgba(229,181,103,.6)}
+  button,.btn{height:48px;border:0;border-radius:12px;background:var(--gold);color:#181206;font-weight:700;padding:0 22px;font-size:1rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+  button:hover:not(:disabled),.btn:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 10px 26px -10px rgba(229,181,103,.7)}
+  button:active:not(:disabled),.btn:active{transform:translateY(0);filter:brightness(.95)}
   button:disabled{opacity:.6}
   .err{color:#ff9c8a;font-size:.9rem;margin-top:12px}
   .grid{margin-top:56px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
@@ -45,20 +49,25 @@
   .grid h3{font-family:"Space Grotesk",sans-serif;margin:0 0 8px;font-size:1.05rem}
   .grid p{margin:0;color:var(--muted);font-size:.95rem;line-height:1.55}
   footer{margin-top:56px;color:var(--muted);font-size:.8rem}
+  .gold{color:var(--gold);text-shadow:0 0 12px rgba(229,181,103,.45),0 0 34px rgba(229,181,103,.22);animation:shimmer 4s ease-in-out infinite}
+  @keyframes shimmer{0%,100%{filter:brightness(1)}50%{filter:brightness(1.18)}}
+  #submit{animation:glowpulse 3.2s ease-in-out infinite}
+  @keyframes glowpulse{0%,100%{box-shadow:0 0 0 0 rgba(229,181,103,0)}50%{box-shadow:0 6px 26px -6px rgba(229,181,103,.55)}}
+  @media(prefers-reduced-motion:reduce){.gold,#submit{animation:none}}
   @media(max-width:640px){main{padding:36px 18px}.row{flex-direction:column;gap:10px}button,.btn,input{flex:0 0 auto;width:100%;height:44px;min-height:44px;max-height:44px;font-size:.95rem}.card{padding:18px}}
 </style>
 </head>
 <body>
 <main>
   <span class="tag">Gratuito</span>
-  <h1>Aprenda a lucrar com sites profissionais</h1>
+  <h1>Aprenda a <span class="gold">lucrar</span> com sites profissionais</h1>
   <p class="lead">Sem carteira de clientes, sem portfólio e sem saber vender. Coloque seu e-mail e receba o acesso na hora.</p>
 
   <div class="card" id="card">
     <form id="form">
       <label for="email">Seu melhor e-mail</label>
       <div class="row">
-        <input id="email" type="email" required maxlength="255" placeholder="voce@email.com" />
+  <input id="email" type="email" required maxlength="255" placeholder="digite seu email aqui..." />
         <button type="submit" id="submit">Quero o PDF</button>
       </div>
       <p class="err" id="err" hidden></p>
@@ -76,6 +85,19 @@
 </main>
 
 <script>
+  (function(){
+    var input=document.getElementById("email");
+    var full="digite seu email aqui...",i=1,del=false;
+    input.setAttribute("placeholder",full.slice(0,1)+"|");
+    function tick(){
+      var delay=190;
+      if(!del){i++;if(i>=full.length){del=true;delay=2200;}}
+      else{i--;delay=110;if(i<=1){del=false;delay=700;}}
+      input.setAttribute("placeholder",full.slice(0,i)+"|");
+      setTimeout(tick,delay);
+    }
+    setTimeout(tick,190);
+  })();
   var SUPABASE_URL = "https://pgzvcvfjmvawjeamikms.supabase.co";
   var SUPABASE_KEY = "sb_publishable_zZH2nYPnEp2whDL7ptDnng_Opwv1mSh";
   var PDF_URL = "https://arrumar-your-way.lovable.app/__l5e/assets-v1/62d240c6-2975-4223-b0b9-6e957cacbeb3/lovable-masterclass-ebook.pdf";
