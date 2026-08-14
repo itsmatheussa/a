@@ -118,7 +118,7 @@
           "Content-Type": "application/json",
           "Prefer": "return=minimal"
         },
-        body: JSON.stringify({ email: document.getElementById("email").value.trim(), source: "code-to-win" })
+        body: JSON.stringify({ email: document.getElementById("email").value.trim()
       });
       if (!res.ok) throw new Error("fail");
       document.getElementById("card").innerHTML =
